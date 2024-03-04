@@ -3,12 +3,12 @@
   "investor_amounts": [
     {
       "name": "Investor A",
-      "requested_amount": 100,
+      "requested_amount": -100,
       "average_amount": 12
     },
     {
       "name": "Investor B",
-      "requested_amount": 12,
+      "requested_amount": -12,
       "average_amount": 343
     },
     {

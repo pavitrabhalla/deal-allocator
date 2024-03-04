@@ -8,7 +8,11 @@ def read_json_file(filename):
 	return data
 
 
-def parsed_inputs(inputs):
+def div_by_zero(a, b):
+	return a / b if b != 0 else 0
+
+
+def parse_deal_inputs(inputs):
 	try:
 		allocation = Decimal(inputs['allocation_amount'])
 		investor_amounts = inputs['investor_amounts']

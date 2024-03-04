@@ -1,5 +1,6 @@
 from decimal import Decimal
 from decimal import getcontext
+from utils import div_by_zero
 
 
 class Prorater:
@@ -7,28 +8,31 @@ class Prorater:
 		getcontext().prec = 7
 
 	# Public method used to allocate funds to investors
-	def prorate(self, allocation: Decimal, investor_amounts: list) -> dict:
-		investors_sanitized = self.__sanitize_and_prep_investor_amounts(investor_amounts)
-		prorate_enabled = self.__should_prorate(allocation, investor_amounts)
+	@staticmethod
+	def prorate(allocation: Decimal, investor_amounts: list) -> dict:
+		investors_sanitized = Prorater.__sanitize_and_prep_investor_amounts(investor_amounts)
+		prorate_enabled = Prorater.__should_prorate(allocation, investors_sanitized)
 		if prorate_enabled:
-			investments = self.__do_prorated_allocation(allocation, allocation, investors_sanitized, {}, investors_sanitized)
+			investments = Prorater.__do_prorated_allocation(
+				allocation, allocation, investors_sanitized, {}, investors_sanitized)
 		else:
-			investments = self.__allocate_requested(investors_sanitized)
+			investments = Prorater.__allocate_requested(investors_sanitized)
 
-		return self.__to_float(investments)
+		return Prorater.__to_float(investments)
 
 	# Handle negative values for requested amount or averages. Ignore investors	with negative values
 	@staticmethod
 	def __sanitize_and_prep_investor_amounts(investor_amounts: list) -> list:
-		for i_a in investor_amounts:
-			if i_a['requested_amount'] < 0 or i_a['average_amount'] < 0:
-				investor_amounts.remove(i_a)
+		investor_amounts = [
+			i for i in investor_amounts if i.get('average_amount', 0) > 0 and i.get('requested_amount', 0) > 0
+		]
 
 		for i_a in investor_amounts:
-			i_a['average_multiplier'] = i_a['average_amount'] / sum(i_a['average_amount'] for i_a in investor_amounts)
+			i_a['average_multiplier'] = div_by_zero(i_a['average_amount'], sum(i_a['average_amount'] for i_a in investor_amounts))
 
 		return investor_amounts
 
+	# Terminate allocation if the remaining allocation is tending to zero or there are no remaining investors
 	@staticmethod
 	def __terminate_allocation(allocation: Decimal, remaining_investors: list) -> bool:
 		if allocation <= Decimal(pow(2, -149)) or not remaining_investors:
@@ -37,23 +41,23 @@ class Prorater:
 
 	# Used to allocate funds using proration when the total allocation is less than the total requested amount
 	# Calls itself recursively until the total allocation remaining is tending to zero
-	def __do_prorated_allocation(
-			self, total_allocation: Decimal, remaining_allocation: Decimal,
+	@staticmethod
+	def __do_prorated_allocation(total_allocation: Decimal, remaining_allocation: Decimal,
 			remaining_investors, investments: dict, investor_amounts: list) -> dict:
-		if self.__terminate_allocation(remaining_allocation, remaining_investors):
+		if Prorater.__terminate_allocation(remaining_allocation, remaining_investors):
 			return investments
 
 		remaining_allocation, remaining_investors, investments, investor_amounts = (
-			self.__allocate_prorated(remaining_allocation, remaining_investors, investments, investor_amounts)
+			Prorater.__allocate_prorated(remaining_allocation, remaining_investors, investments, investor_amounts)
 		)
-		return self.__do_prorated_allocation(
+		return Prorater.__do_prorated_allocation(
 			total_allocation, remaining_allocation, remaining_investors, investments, investor_amounts)
 
 	@staticmethod
 	def __to_float(investments: dict) -> dict:
 		return {k: float(v) for k, v in investments.items()}
 
-	# For the last investor, allocate the remaining amount
+	# For the last investor, allocate the remaining amount appropriately
 	@staticmethod
 	def __handle_last_investor(remaining: Decimal, investor: dict, investments: dict, investor_amounts: list):
 		i_name = investor['name']
@@ -66,18 +70,21 @@ class Prorater:
 		return remaining, remaining_investors, investments, investor_amounts
 
 	# Implements rules for calculating prorated allocation
-	def __allocate_prorated(self, allocation: Decimal, remaining_investors: list, investments: dict, investor_amounts: list):
+	@staticmethod
+	def __allocate_prorated(allocation: Decimal, remaining_investors: list, investments: dict, investor_amounts: list):
 		remaining = allocation
 
 		if len(remaining_investors) == 1:
-			return self.__handle_last_investor(remaining, remaining_investors[0], investments, investor_amounts)
+			return Prorater.__handle_last_investor(remaining, remaining_investors[0], investments, investor_amounts)
 
 		for i_a in investor_amounts:
+			# Skip investors that have already been allocated their requested amount
 			if i_a['requested_amount'] <= 0:
 				continue
 
 			i_allocation = allocation * i_a['average_multiplier']
 
+			# If the investor can get their remaining requested amount, allocate it
 			if i_allocation > i_a['requested_amount']:
 				i_allocation = i_a['requested_amount']
 
@@ -86,6 +93,7 @@ class Prorater:
 				(i_a['name'] in investments) else i_allocation
 			i_a['requested_amount'] -= i_allocation
 
+		# Remove investors that have been allocated their requested amount
 		remaining_investors = [
 			investor for investor in investor_amounts if
 			investor['requested_amount'] > 0
