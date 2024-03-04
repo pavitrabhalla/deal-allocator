@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col grid grid-cols-3 items-left justify-between p-24">
+    <main className="bg-grey-800 flex min-h-screen flex-col grid grid-cols-3 items-left justify-between p-24">
       <div className="col-span-2 pr-6">
         <h1 className="text-2xl font-bold text-left">Deal Allocator</h1>
         <DealAllocatorForm onSubmit={handleSubmit} investorData={investorData} setInvestorData={setInvestorData} />

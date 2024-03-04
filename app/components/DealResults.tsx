@@ -15,6 +15,10 @@ const Results: React.FC<DealResultProps> = ({ dealData, error }) => {
     return <div className="pt-12">Waiting for inputs...</div>;
   }
 
+  if (dealData.deal.length === 0) {
+    return <div className="pt-12">No valid investors</div>;
+  }
+
   return (
     <div className="pt-12">
       <table className="border-collapse border border-gray-800 mt-4">
