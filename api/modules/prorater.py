@@ -1,6 +1,6 @@
 from decimal import Decimal
 from decimal import getcontext
-from utils import div_by_zero
+from api.modules.utils import div_by_zero
 
 
 class Prorater:

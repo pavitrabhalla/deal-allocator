@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
-from api.prorater import Prorater
-from utils import parse_deal_inputs
+from api.modules.prorater import Prorater
+from api.modules.utils import parse_deal_inputs
 
 app = Flask(__name__)
 
