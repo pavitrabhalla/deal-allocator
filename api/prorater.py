@@ -114,3 +114,4 @@ class Prorater:
 	def __should_prorate(allocation: Decimal, investor_amounts: list):
 		total_requested_amount = sum(i_a['requested_amount'] for i_a in investor_amounts)
 		return total_requested_amount > allocation
+
