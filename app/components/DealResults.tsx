@@ -21,18 +21,18 @@ const Results: React.FC<DealResultProps> = ({ dealData, error }) => {
 
   return (
     <div className="pt-12">
-      <table className="border-collapse border border-gray-800 mt-4">
+      <table className="border-collapse border mt-4">
         <thead>
           <tr>
-            <th className="border border-gray-400 px-4 py-2">Name</th>
-            <th className="border border-gray-400 px-4 py-2">Allocated</th>
+            <th className="border px-4 py-2">Name</th>
+            <th className="border px-4 py-2">Allocated</th>
           </tr>
         </thead>
         <tbody>
           {dealData.deal.map((investorAllocation, index) => (
             <tr key={index}>
-              <td className="border border-gray-400 px-4 py-2">{investorAllocation.name}</td>
-              <td className="border border-gray-400 px-4 py-2">{investorAllocation.investment}</td>
+              <td className="border px-4 py-2">{investorAllocation.name}</td>
+              <td className="border px-4 py-2">{investorAllocation.investment}</td>
             </tr>
           ))}
         </tbody>
