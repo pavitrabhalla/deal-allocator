@@ -23,7 +23,7 @@ const DealAllocatorForm: React.FC<DealAllocatorFormProps> = ({ onSubmit, investo
           type="number"
           name="allocation_amount"
           id="allocation"
-          className="block w-full rounded-md border-0 py-1.5 pl-7 pr-7 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className="block w-full rounded-md dark:text-black border-0 py-1.5 pl-7 pr-7 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           placeholder="0.00"
         />
       </div>

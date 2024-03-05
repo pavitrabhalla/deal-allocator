@@ -42,7 +42,7 @@ const Investors: React.FC<InvestorFormProps> = ({ investorData, setInvestorData 
               placeholder="Name"
               value={investor.name}
               onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-              className="border border-gray-300 px-3 py-2 mr-2 col-span-4"
+              className="border dark:text-black border-gray-300 px-3 py-2 mr-2 col-span-4"
               required
             />
             <input
@@ -50,7 +50,7 @@ const Investors: React.FC<InvestorFormProps> = ({ investorData, setInvestorData 
               placeholder="Requested"
               value={investor.requested_amount}
               onChange={(e) => handleInputChange(index, 'requested_amount', e.target.value)}
-              className="border border-gray-300 px-3 py-2 mr-2 col-span-2"
+              className="border dark:text-black border-gray-300 px-3 py-2 mr-2 col-span-2"
               required
             />
             <input
@@ -58,7 +58,7 @@ const Investors: React.FC<InvestorFormProps> = ({ investorData, setInvestorData 
               placeholder="Average"
               value={investor.average_amount}
               onChange={(e) => handleInputChange(index, 'average_amount', e.target.value)}
-              className="border border-gray-300 px-3 py-2 mr-2 col-span-2"
+              className="border dark:text-black border-gray-300 px-3 py-2 mr-2 col-span-2"
               required
             />
             <button onClick={() => handleRemoveInvestor(index)} className="ml-2 p-2 col-span-1 rounded-full bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:bg-red-600">
