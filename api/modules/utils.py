@@ -12,6 +12,10 @@ def div_by_zero(a, b):
 	return a / b if b != 0 else 0
 
 
+def to_float(investments: dict) -> dict:
+	return {k: float(v) for k, v in investments.items()}
+
+
 def parse_deal_inputs(inputs):
 	try:
 		allocation = Decimal(inputs['allocation_amount'])

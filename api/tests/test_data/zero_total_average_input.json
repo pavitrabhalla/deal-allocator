@@ -4,17 +4,17 @@
     {
       "name": "Investor A",
       "requested_amount": 96,
-      "average_amount": 12
+      "average_amount": 0
     },
     {
       "name": "Investor B",
-      "requested_amount": -12,
-      "average_amount": 343
+      "requested_amount": 1,
+      "average_amount": 0
     },
     {
       "name": "Investor C",
-      "requested_amount": -111,
-      "average_amount": 22
+      "requested_amount": 123,
+      "average_amount": 0
     }
   ]
 }

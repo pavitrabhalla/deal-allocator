@@ -1,6 +1,6 @@
 from decimal import Decimal
 from decimal import getcontext
-from api.modules.utils import div_by_zero
+from api.modules.utils import div_by_zero, to_float
 
 
 class Prorater:
@@ -18,7 +18,7 @@ class Prorater:
 		else:
 			investments = Prorater.__allocate_requested(investors_sanitized)
 
-		return Prorater.__to_float(investments)
+		return to_float(investments)
 
 	# Handle negative values for requested amount or averages. Ignore investors	with negative values
 	@staticmethod
@@ -52,10 +52,6 @@ class Prorater:
 		)
 		return Prorater.__do_prorated_allocation(
 			total_allocation, remaining_allocation, remaining_investors, investments, investor_amounts)
-
-	@staticmethod
-	def __to_float(investments: dict) -> dict:
-		return {k: float(v) for k, v in investments.items()}
 
 	# For the last investor, allocate the remaining amount appropriately
 	@staticmethod

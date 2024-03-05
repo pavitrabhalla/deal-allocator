@@ -51,6 +51,18 @@ class TestProrate(unittest.TestCase):
 		self.assertEqual(self.prorater.prorate(allocation, investor_amounts), read_json_file(
 			'api/tests/test_data/negative_request_output.json'))
 
+	def test_no_valid_investors(self):
+		test_input = read_json_file('api/tests/test_data/no_valid_investors_input.json')
+		allocation, investor_amounts = parse_deal_inputs(test_input)
+		self.assertEqual(self.prorater.prorate(allocation, investor_amounts), read_json_file(
+			'api/tests/test_data/no_valid_investors_output.json'))
+
+	def test_zero_total_average(self):
+		test_input = read_json_file('api/tests/test_data/zero_total_average_input.json')
+		allocation, investor_amounts = parse_deal_inputs(test_input)
+		self.assertEqual(self.prorater.prorate(allocation, investor_amounts), read_json_file(
+			'api/tests/test_data/zero_total_average_output.json'))
+
 
 if __name__ == '__main__':
 	unittest.main()
