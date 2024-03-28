@@ -12,6 +12,8 @@
 
 This app takes allocation requests from investors and returns prorated investments based on the request, and past average investment activity.
 
+It follows the algorithm rules as described in the prompt. See prompt/README.md
+
 
 ## Demo
 
